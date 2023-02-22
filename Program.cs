@@ -23,7 +23,7 @@ for (int i = 0; i < transactions.Count; i++)
     }
     catch (FormatException)
     {
-        Console.WriteLine($"Invalid date format on line {i}: '{transactionArr[0]}'. Date must be in dd/mm/yy.");
+        Console.WriteLine($"Invalid date format on line {i + 2}: '{transactionArr[0]}'. Date must be in dd/mm/yy.");
         continue;
     }
 
@@ -33,7 +33,7 @@ for (int i = 0; i < transactions.Count; i++)
     }
     catch (FormatException)
     {
-        Console.WriteLine($"Invalid amount on line {i}: '{transactionArr[4]}'. Amount must be in £x.xx format.");
+        Console.WriteLine($"Invalid amount on line {i + 2}: '{transactionArr[4]}'. Amount must be in £x.xx format.");
         continue;
     }
 
