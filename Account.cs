@@ -22,4 +22,19 @@ class Account
     {
         TransactionsOut.Add(new Transaction(transDate, accountFrom, accountTo, description, amount));
     }
+
+    public void ListAccount()
+    {
+        Console.WriteLine($"Account: {Name}");
+
+        foreach (Transaction transaction in TransactionsIn)
+        {
+            Console.WriteLine($"In: {transaction.TransDate}, {transaction.AccountFrom.Name}, {transaction.Description}, £{transaction.Amount}");
+        }
+        foreach (Transaction transaction in TransactionsOut)
+        {
+            Console.WriteLine($"Out: {transaction.TransDate}, {transaction.AccountTo.Name}, {transaction.Description}, £{transaction.Amount}");
+        }
+
+    }
 }

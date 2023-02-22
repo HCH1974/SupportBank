@@ -11,6 +11,8 @@ foreach (string line in Lines)
     transactions.Add(line);
 }
 
+transactions.RemoveAt(0);
+
 foreach (string transaction in transactions)
 {
     string[] transactionArr = transaction.Split(",");
@@ -24,20 +26,17 @@ foreach (string transaction in transactions)
     accountTo.AddTransactionIn(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
 }
 
+Console.Write("Would you like to (1) ListAll  or (2) List[Account]: ");
+string choice = Console.ReadLine()!;
 
+if (choice == "1")
+{
+    ourBank.ListAll();
+}
 
-
-
-
-
-// string transact1 = "01/01/2014,Jon A,Sarah T,Pokemon Training,7.8";
-
-// string[] transact1arr = transact1.Split(",");
-
-
-// ourBank.AddAccount(new Account(transact1arr[1], ourBank));
-
-// ourBank.AddAccount(new Account(transact1arr[2], ourBank));
-
-// ourBank.AccountList[0].AddTransactionIn(transact1arr[0], jonAccount, sarahAccount, transact1arr[3], Decimal.Parse(transact1arr[4]));
-// jonAccount.AddTransactionOut(transact1arr[0], jonAccount, sarahAccount, transact1arr[3], Decimal.Parse(transact1arr[4]));
+if (choice == "2")
+{
+    Console.Write("Please enter account name: ");
+    string accChoice = Console.ReadLine()!;
+    ourBank.FindOrCreateAccount(accChoice).ListAccount();
+}
