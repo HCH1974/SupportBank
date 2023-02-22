@@ -2,7 +2,7 @@
 
 Bank ourBank = new Bank();
 
-var Lines = File.ReadLines("Transactions2014.csv");
+var Lines = File.ReadLines("DodgyTransactions2015.csv");
 
 List<string> transactions = new List<string>();
 
@@ -13,9 +13,29 @@ foreach (string line in Lines)
 
 transactions.RemoveAt(0);
 
-foreach (string transaction in transactions)
+for (int i = 0; i < transactions.Count; i++)
 {
-    string[] transactionArr = transaction.Split(",");
+    string[] transactionArr = transactions[i].Split(",");
+
+    try
+    {
+        DateTime.Parse(transactionArr[0]);
+    }
+    catch (FormatException)
+    {
+        Console.WriteLine($"Invalid date format on line {i}: '{transactionArr[0]}'. Date must be in dd/mm/yy.");
+        continue;
+    }
+
+    try
+    {
+        Decimal.Parse(transactionArr[4]);
+    }
+    catch (FormatException)
+    {
+        Console.WriteLine($"Invalid amount on line {i}: '{transactionArr[4]}'. Amount must be in £x.xx format.");
+        continue;
+    }
 
     Account accountFrom = ourBank.FindOrCreateAccount(transactionArr[1]);
 
