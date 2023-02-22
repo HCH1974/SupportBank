@@ -1,0 +1,15 @@
+C:\Training\support-bank\bin\Debug\net6.0\support-bank.exe
+C:\Training\support-bank\bin\Debug\net6.0\support-bank.deps.json
+C:\Training\support-bank\bin\Debug\net6.0\support-bank.runtimeconfig.json
+C:\Training\support-bank\bin\Debug\net6.0\support-bank.dll
+C:\Training\support-bank\bin\Debug\net6.0\support-bank.pdb
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.csproj.AssemblyReference.cache
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.GeneratedMSBuildEditorConfig.editorconfig
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.AssemblyInfoInputs.cache
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.AssemblyInfo.cs
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.csproj.CoreCompileInputs.cache
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.dll
+C:\Training\support-bank\obj\Debug\net6.0\refint\support-bank.dll
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.pdb
+C:\Training\support-bank\obj\Debug\net6.0\support-bank.genruntimeconfig.cache
+C:\Training\support-bank\obj\Debug\net6.0\ref\support-bank.dll
