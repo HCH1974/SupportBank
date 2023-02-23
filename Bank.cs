@@ -19,12 +19,16 @@ class Bank
         }
         // First line has column headings
         transactions.RemoveAt(0);
-
+        bool anyErrors = false;
         for (int i = 0; i < transactions.Count; i++)
         {
             string[] transactionArr = transactions[i].Split(",");
 
-            if (!CheckDataFormat(transactionArr[0] , transactionArr[4] , i)) continue;
+            if (!CheckDataFormat(transactionArr[0], transactionArr[4], i))
+            {
+                anyErrors = true;
+                continue;
+            }
 
             Account accountFrom = FindOrCreateAccount(transactionArr[1]);
             Account accountTo = FindOrCreateAccount(transactionArr[2]);
@@ -32,8 +36,12 @@ class Bank
             accountFrom.AddTransactionOut(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
             accountTo.AddTransactionIn(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
         }
-    }   
-   public Account FindOrCreateAccount(string accountname)
+        if (anyErrors)
+        {
+            throw new FormatException("Errors as above.");
+        }
+    }
+    public Account FindOrCreateAccount(string accountname)
     {
         foreach (Account account in AccountList)
         {
@@ -62,8 +70,8 @@ class Bank
         }
     }
 
-     public bool CheckDataFormat(string dateString , string amountString, int i)
-     {
+    public bool CheckDataFormat(string dateString, string amountString, int i)
+    {
         try
         {
             DateTime.Parse(dateString);

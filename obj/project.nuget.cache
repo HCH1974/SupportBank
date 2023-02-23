@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "sxkpYqwgEzx6lgr+cV+40bvHDce+qLjPrdEqcZ772rZ11KPOWG/kAfkxAtzx4cG8IJ6Fzf32mBQ7qLvjsSgslQ==",
+  "dgSpecHash": "AG7qozSkABIBUftqFEu1bafg6a49SCXlS/6Km/0Ns+7Ykj+oynls/wuQK+AO1vFNSJcYG50xhMkN6/lNYaTRPg==",
   "success": true,
   "projectFilePath": "C:\\Training\\support-bank\\support-bank.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\hanhuk\\.nuget\\packages\\nlog\\5.1.2\\nlog.5.1.2.nupkg.sha512"
+  ],
   "logs": []
 }
