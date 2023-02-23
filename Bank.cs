@@ -1,16 +1,38 @@
+using NLog;
+
 namespace supportbank;
+
 
 class Bank
 {
+    private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+
     public List<Account> AccountList { get; set; }
 
     public Bank()
     {
         AccountList = new List<Account>();
     }
-    public void ProcessInputFile(string inputFileName)
+    public void ProcessInputFile()
     {
-        var Lines = File.ReadLines(inputFileName);
+        string inputFile;
+        IEnumerable<string>? Lines = null;
+        while (Lines == null)
+        {
+            try
+            {
+                Console.Write("Enter the name of your input data file: ");
+                inputFile = Console.ReadLine()!;
+                Lines = File.ReadLines(inputFile);
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("Sorry that file couldn't be found, please try again: ");
+                Logger.Warn($"The user entered an incorrect file path.\nError: {ex}");
+            }
+        }
+
+
         List<string> transactions = new List<string>();
 
         foreach (string line in Lines)
@@ -19,7 +41,9 @@ class Bank
         }
         // First line has column headings
         transactions.RemoveAt(0);
+
         bool anyErrors = false;
+
         for (int i = 0; i < transactions.Count; i++)
         {
             string[] transactionArr = transactions[i].Split(",");
@@ -76,18 +100,20 @@ class Bank
         {
             DateTime.Parse(dateString);
         }
-        catch (FormatException)
+        catch (FormatException ex)
         {
             Console.WriteLine($"Invalid date format on line {i + 2}: '{dateString}'. Date must be in dd/mm/yy.");
+            Logger.Error($"Invalid date format on line {i + 2}: '{dateString}'.\nError: {ex}");
             return false;
         }
         try
         {
             Decimal.Parse(amountString);
         }
-        catch (FormatException)
+        catch (FormatException ex)
         {
             Console.WriteLine($"Invalid amount on line {i + 2}: '{amountString}'. Amount must be in £x.xx format.");
+            Logger.Error($"Invalid amount on line {i + 2}: '{amountString}'.\nError: {ex}");
             return false;
         }
         return true;
