@@ -5,6 +5,6 @@ class Transactionjson {
     public string? FromAccount { get; set; }
     public string? ToAccount { get; set; }
     public string? Narrative { get; set; }
-    public decimal? Amount { get; set; }
+    public decimal Amount { get; set; }
 
 }
