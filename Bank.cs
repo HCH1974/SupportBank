@@ -1,4 +1,6 @@
 using NLog;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace supportbank;
 
@@ -12,54 +14,81 @@ class Bank
     public Bank()
     {
         AccountList = new List<Account>();
+        Logger.Info("New bank successfully created.");
     }
     public void ProcessInputFile()
     {
         string inputFile;
-        IEnumerable<string>? Lines = null;
-        while (Lines == null)
+        List<string> transactions = new List<string>();
+        var transactionJsonList = new List<Transactionjson>();
+        while (!transactions.Any() && !transactionJsonList.Any())
         {
             try
             {
                 Console.Write("Enter the name of your input data file: ");
                 inputFile = Console.ReadLine()!;
-                Lines = File.ReadLines(inputFile);
+                string fileExt = Path.GetExtension(inputFile);
+                if (fileExt == ".csv")
+                {
+                    var Lines = File.ReadLines(inputFile);
+                    foreach (string line in Lines)
+                    {
+                        transactions.Add(line);
+                    }
+                    transactions.RemoveAt(0);
+                }
+                else if (fileExt == ".json")
+                {
+                    transactionJsonList = (JsonConvert.DeserializeObject<List<Transactionjson>>(File.ReadAllText(inputFile)))!;
+                }
+                Logger.Info($"User entered {inputFile}, this was successfully read.");
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
                 Console.WriteLine("Sorry that file couldn't be found, please try again: ");
-                Logger.Warn($"The user entered an incorrect file path.\nError: {ex}");
+                Logger.Warn($"The user entered an incorrect file path.");
             }
         }
-
-
-        List<string> transactions = new List<string>();
-
-        foreach (string line in Lines)
-        {
-            transactions.Add(line);
-        }
-        // First line has column headings
-        transactions.RemoveAt(0);
 
         bool anyErrors = false;
 
-        for (int i = 0; i < transactions.Count; i++)
+        if (transactions.Any())
         {
-            string[] transactionArr = transactions[i].Split(",");
-
-            if (!CheckDataFormat(transactionArr[0], transactionArr[4], i))
+            for (int i = 0; i < transactions.Count; i++)
             {
-                anyErrors = true;
-                continue;
+                string[] transactionArr = transactions[i].Split(",");
+
+                if (!CheckDataFormat(transactionArr[0], transactionArr[4], i))
+                {
+                    anyErrors = true;
+                    continue;
+                }
+
+                Account accountFrom = FindOrCreateAccount(transactionArr[1]);
+                Account accountTo = FindOrCreateAccount(transactionArr[2]);
+
+                accountFrom.AddTransactionOut(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
+                accountTo.AddTransactionIn(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
             }
-
-            Account accountFrom = FindOrCreateAccount(transactionArr[1]);
-            Account accountTo = FindOrCreateAccount(transactionArr[2]);
-
-            accountFrom.AddTransactionOut(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
-            accountTo.AddTransactionIn(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
         }
+        else if (transactionJsonList.Any())
+        {
+            for (int i = 0; i < transactionJsonList.Count; i++)
+            {
+                if (!CheckDataFormat(transactionJsonList[i].Date, transactionJsonList[i].Amount.ToString(), i))
+                {
+                    anyErrors = true;
+                    continue;
+                }
+
+                Account accountFrom = FindOrCreateAccount(transactionJsonList[i].FromAccount);
+                Account accountTo = FindOrCreateAccount(transactionJsonList[i].ToAccount);
+
+                accountFrom.AddTransactionOut(transactionJsonList[i].Date, accountFrom, accountTo, transactionJsonList[i].Narrative, transactionJsonList[i].Amount);
+                accountTo.AddTransactionIn(transactionJsonList[i].Date, accountFrom, accountTo, transactionJsonList[i].Narrative, transactionJsonList[i].Amount);   
+            }
+        }
+
         if (anyErrors)
         {
             throw new FormatException("Errors as above.");
@@ -92,6 +121,7 @@ class Bank
             }
             Console.WriteLine($"Account: {account.Name}\n\tAmount owing: £{amountIn}\n\tAmount owed: £{amountOut}");
         }
+        Logger.Info("Report of All Accounts complete.");
     }
 
     public bool CheckDataFormat(string dateString, string amountString, int i)

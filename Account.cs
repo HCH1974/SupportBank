@@ -1,7 +1,10 @@
+using NLog;
+
 namespace supportbank;
 
 class Account
 {
+    private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
     public string Name { get; set; }
     public List<Transaction> TransactionsIn { get; set; }
     public List<Transaction> TransactionsOut { get; set; }
@@ -31,6 +34,6 @@ class Account
         {
             Console.WriteLine($"Out: {transaction.TransDate}, {transaction.AccountTo.Name}, {transaction.Description}, £{transaction.Amount}");
         }
-
+        Logger.Info($"Report of {Name}'s Account complete.");
     }
 }
