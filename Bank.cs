@@ -21,9 +21,8 @@ class Bank
     {
         string inputFile;
         List<string> transactions = new List<string>();
-        var transactionJsonList = new List<Transactionjson>();
 
-        while (!transactions.Any() && !transactionJsonList.Any())
+        while (!transactions.Any())
         {
             try
             {
@@ -41,7 +40,19 @@ class Bank
                 }
                 else if (fileExt == ".json")
                 {
+                    var transactionJsonList = new List<Transactionjson>();
                     transactionJsonList = (JsonConvert.DeserializeObject<List<Transactionjson>>(File.ReadAllText(inputFile)))!;
+
+                    foreach (var item in transactionJsonList)
+                    {
+                        string Date = item.Date;
+                        string Amount = item.Amount.ToString();
+                        string Description = item.Narrative;
+                        string AccountFrom = item.FromAccount;
+                        string AccountTo = item.ToAccount;
+
+                        transactions.Add($"{Date},{AccountFrom},{AccountTo},{Description},{Amount}");
+                    }
                 }
                 else if (fileExt == ".xml")
                 {
@@ -91,24 +102,6 @@ class Bank
                 accountTo.AddTransactionIn(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
             }
         }
-        else if (transactionJsonList.Any())
-        {
-            for (int i = 0; i < transactionJsonList.Count; i++)
-            {
-                if (!CheckDataFormat(transactionJsonList[i].Date, transactionJsonList[i].Amount.ToString(), i))
-                {
-                    anyErrors = true;
-                    continue;
-                }
-
-                Account accountFrom = FindOrCreateAccount(transactionJsonList[i].FromAccount);
-                Account accountTo = FindOrCreateAccount(transactionJsonList[i].ToAccount);
-
-                accountFrom.AddTransactionOut(transactionJsonList[i].Date, accountFrom, accountTo, transactionJsonList[i].Narrative, transactionJsonList[i].Amount);
-                accountTo.AddTransactionIn(transactionJsonList[i].Date, accountFrom, accountTo, transactionJsonList[i].Narrative, transactionJsonList[i].Amount);
-            }
-        }
-
         if (anyErrors)
         {
             throw new FormatException("Errors as above.");
