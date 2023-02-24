@@ -20,7 +20,7 @@ class Bank
     public void ProcessInputFile()
     {
         string inputFile;
-        List<string> transactions = new List<string>();
+        List<string[]> transactions = new List<string[]>();
 
         while (!transactions.Any())
         {
@@ -34,7 +34,7 @@ class Bank
                     var Lines = File.ReadLines(inputFile);
                     foreach (string line in Lines)
                     {
-                        transactions.Add(line);
+                        transactions.Add(line.Split(","));
                     }
                     transactions.RemoveAt(0);
                 }
@@ -50,8 +50,8 @@ class Bank
                         string Description = item.Narrative;
                         string AccountFrom = item.FromAccount;
                         string AccountTo = item.ToAccount;
-
-                        transactions.Add($"{Date},{AccountFrom},{AccountTo},{Description},{Amount}");
+                        // TODO - add string[]
+                        transactions.Add(new string[] { Date, AccountFrom, AccountTo, Description, Amount });
                     }
                 }
                 else if (fileExt == ".xml")
@@ -69,7 +69,7 @@ class Bank
                         string AccountFrom = node.SelectNodes("Parties/From")[0].InnerText;
                         string AccountTo = node.SelectNodes("Parties/To")[0].InnerText;
 
-                        transactions.Add($"{Date},{AccountFrom},{AccountTo},{Description},{Amount}");
+                        transactions.Add(new string[] { Date, AccountFrom, AccountTo, Description, Amount });
                     }
                 }
                 Logger.Info($"User entered {inputFile}, this was successfully read.");
@@ -83,25 +83,24 @@ class Bank
 
         bool anyErrors = false;
 
-        if (transactions.Any())
+
+        for (int i = 0; i < transactions.Count; i++)
         {
-            for (int i = 0; i < transactions.Count; i++)
+            string[] transactionArr = transactions[i];
+
+            if (!CheckDataFormat(transactionArr[0], transactionArr[4], i))
             {
-                string[] transactionArr = transactions[i].Split(",");
-
-                if (!CheckDataFormat(transactionArr[0], transactionArr[4], i))
-                {
-                    anyErrors = true;
-                    continue;
-                }
-
-                Account accountFrom = FindOrCreateAccount(transactionArr[1]);
-                Account accountTo = FindOrCreateAccount(transactionArr[2]);
-
-                accountFrom.AddTransactionOut(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
-                accountTo.AddTransactionIn(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
+                anyErrors = true;
+                continue;
             }
+
+            Account accountFrom = FindOrCreateAccount(transactionArr[1]);
+            Account accountTo = FindOrCreateAccount(transactionArr[2]);
+
+            accountFrom.AddTransactionOut(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
+            accountTo.AddTransactionIn(transactionArr[0], accountFrom, accountTo, transactionArr[3], Decimal.Parse(transactionArr[4]));
         }
+
         if (anyErrors)
         {
             throw new FormatException("Errors as above.");
