@@ -45,7 +45,7 @@ class Bank
 
                     foreach (var item in transactionJsonList)
                     {
-                        string Date = item.Date;
+                        string Date = item.Date.Split("T")[0];
                         string Amount = item.Amount.ToString();
                         string Description = item.Narrative;
                         string AccountFrom = item.FromAccount;
