@@ -50,7 +50,6 @@ class Bank
                         string Description = item.Narrative;
                         string AccountFrom = item.FromAccount;
                         string AccountTo = item.ToAccount;
-                        // TODO - add string[]
                         transactions.Add(new string[] { Date, AccountFrom, AccountTo, Description, Amount });
                     }
                 }
@@ -83,7 +82,6 @@ class Bank
 
         bool anyErrors = false;
 
-
         for (int i = 0; i < transactions.Count; i++)
         {
             string[] transactionArr = transactions[i];
@@ -106,6 +104,7 @@ class Bank
             throw new FormatException("Errors as above.");
         }
     }
+
     public Account FindOrCreateAccount(string accountname)
     {
         foreach (Account account in AccountList)
@@ -116,6 +115,7 @@ class Bank
         AccountList.Add(newAccount);
         return newAccount;
     }
+
     public void ListAll()
     {
         foreach (Account account in AccountList)
