@@ -1,6 +1,7 @@
 using NLog;
 using Newtonsoft;
 using Newtonsoft.Json;
+using System.Xml;
 
 namespace supportbank;
 
@@ -21,6 +22,7 @@ class Bank
         string inputFile;
         List<string> transactions = new List<string>();
         var transactionJsonList = new List<Transactionjson>();
+
         while (!transactions.Any() && !transactionJsonList.Any())
         {
             try
@@ -40,6 +42,24 @@ class Bank
                 else if (fileExt == ".json")
                 {
                     transactionJsonList = (JsonConvert.DeserializeObject<List<Transactionjson>>(File.ReadAllText(inputFile)))!;
+                }
+                else if (fileExt == ".xml")
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(inputFile);
+                    XmlElement root = doc.DocumentElement;
+                    XmlNodeList childNodes = root?.ChildNodes;
+                    foreach (XmlNode node in childNodes)
+                    {
+
+                        string Date = DateTime.FromOADate(double.Parse(node.Attributes[0].Value)).ToShortDateString();
+                        string Amount = node.SelectNodes("Value")[0].InnerText;
+                        string Description = node.SelectNodes("Description")[0].InnerText;
+                        string AccountFrom = node.SelectNodes("Parties/From")[0].InnerText;
+                        string AccountTo = node.SelectNodes("Parties/To")[0].InnerText;
+
+                        transactions.Add($"{Date},{AccountFrom},{AccountTo},{Description},{Amount}");
+                    }
                 }
                 Logger.Info($"User entered {inputFile}, this was successfully read.");
             }
@@ -85,7 +105,7 @@ class Bank
                 Account accountTo = FindOrCreateAccount(transactionJsonList[i].ToAccount);
 
                 accountFrom.AddTransactionOut(transactionJsonList[i].Date, accountFrom, accountTo, transactionJsonList[i].Narrative, transactionJsonList[i].Amount);
-                accountTo.AddTransactionIn(transactionJsonList[i].Date, accountFrom, accountTo, transactionJsonList[i].Narrative, transactionJsonList[i].Amount);   
+                accountTo.AddTransactionIn(transactionJsonList[i].Date, accountFrom, accountTo, transactionJsonList[i].Narrative, transactionJsonList[i].Amount);
             }
         }
 

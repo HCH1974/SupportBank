@@ -93,19 +93,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\hanhuk\\.nuget\\packages\\": {}
+    "C:\\Users\\josfry\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Training\\support-bank\\support-bank.csproj",
+      "projectUniqueName": "C:\\Training\\support-bank\\support-bank.csproj",
       "projectName": "support-bank",
-      "projectPath": "c:\\Training\\support-bank\\support-bank.csproj",
-      "packagesPath": "C:\\Users\\hanhuk\\.nuget\\packages\\",
-      "outputPath": "c:\\Training\\support-bank\\obj\\",
+      "projectPath": "C:\\Training\\support-bank\\support-bank.csproj",
+      "packagesPath": "C:\\Users\\josfry\\.nuget\\packages\\",
+      "outputPath": "C:\\Training\\support-bank\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\hanhuk\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\josfry\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"

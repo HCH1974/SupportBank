@@ -10,11 +10,11 @@
         "projectUniqueName": "C:\\Training\\support-bank\\support-bank.csproj",
         "projectName": "support-bank",
         "projectPath": "C:\\Training\\support-bank\\support-bank.csproj",
-        "packagesPath": "C:\\Users\\hanhuk\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\josfry\\.nuget\\packages\\",
         "outputPath": "C:\\Training\\support-bank\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hanhuk\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\josfry\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
