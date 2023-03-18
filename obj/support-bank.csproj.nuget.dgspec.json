@@ -10,11 +10,11 @@
         "projectUniqueName": "C:\\Training\\support-bank\\support-bank.csproj",
         "projectName": "support-bank",
         "projectPath": "C:\\Training\\support-bank\\support-bank.csproj",
-        "packagesPath": "C:\\Users\\josfry\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\hanhuk\\.nuget\\packages\\",
         "outputPath": "C:\\Training\\support-bank\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\josfry\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\hanhuk\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -63,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.407\\RuntimeIdentifierGraph.json"
         }
       }
     }
