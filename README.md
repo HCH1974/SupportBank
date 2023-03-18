@@ -4,7 +4,7 @@ This is a console application written in C#. The data from an input file (of typ
 
 ## Setup
 
-To execute this program, run the command dotnet run. You will need to enter the input datacd su  file as one of the following:
+To execute this program, run the command dotnet run. You will need to enter the input data file as one of the following:
 
 Transactions2012.xml
 Transactions2013.json
